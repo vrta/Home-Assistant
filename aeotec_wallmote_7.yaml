@@ -1,6 +1,6 @@
 blueprint:
   name: Aeotec WallMote7 Automation
-  description: Configure actions for WallMote7.
+  description: Configure actions for WallMote7
   domain: automation
   source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant-Blueprints/main/aeotec_wallmote_7.yaml
   author: Zachary Priddy
