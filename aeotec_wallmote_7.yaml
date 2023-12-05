@@ -2,7 +2,7 @@ blueprint:
   name: Aeotec WallMote7 Automation
   description: Configure actions for WallMote7.
   domain: automation
-  source_url: https://github.com/home-assistant/core/blob/dev/homeassistant/components/automation/blueprints/motion_light.yaml
+  source_url: https://github.com/zpriddy/Home-Assistant-Blueprints/blob/main/aeotec_wallmote_7.yaml
   author: Zachary Priddy
   input:
     wallmote_device:
