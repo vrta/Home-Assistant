@@ -1,0 +1,218 @@
+blueprint:
+  name: Aeotec WallMote7 Automation
+  description: Configure actions for WallMote7.
+  domain: automation
+  source_url: https://github.com/home-assistant/core/blob/dev/homeassistant/components/automation/blueprints/motion_light.yaml
+  author: Zachary Priddy
+  input:
+    wallmote_device:
+      name: WallMote Device
+      selector:
+        device:
+          filter:
+            model: ZWA022
+    dimming:
+      name: Enable Dimming
+      description: Enable dimming if the buttons are held down
+      selector:
+        boolean:
+    dimming_light:
+      name: Dimmer Light
+      description: Light to dim when held down.
+      selector:
+        target:
+          entity:
+            - domain: light
+
+    # Actions
+    top_1:
+      name: Actions for Top Pressed
+      selector:
+        action:
+    top_2:
+      name: Actions for Top Pressed 2x
+      selector: 
+        action:
+    top_3:
+      name: Actions for Top Pressed 3x
+      selector: 
+        action:
+    top_4:
+      name: Actions for Top Pressed 4x
+      selector: 
+        action:
+    top_5:
+      name: Actions for Top Pressed 5x
+      selector: 
+        action:
+    top_held:
+      name: Actions for Top Held
+      description: This wont apply if dimming is enabled
+      selector: 
+        action:
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  # Top Button
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 0
+    id: Top1
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 3
+    id: Top2
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 4
+    id: Top3
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 5
+    id: Top4
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 6
+    id: Top5
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 2
+    id: TopHeld
+
+  # Bottom Button
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "002"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 0
+    id: Bottom1
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 3
+    id: Bottom2
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "002"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 4
+    id: Bottom3
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "002"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 5
+    id: Bottom4
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "002"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 6
+    id: Bottom5
+  - platform: device
+    device_id: !input wallmote_device
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "002"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 2
+    id: BottomHeld
+
+  # Button Release Triggers
+  - platform: device
+    device_id: 1857a0a6e845e0539c062d2476aa2538
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "002"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 002
+    value: 1
+  - platform: device
+    device_id: 1857a0a6e845e0539c062d2476aa2538
+    domain: zwave_js
+    type: event.value_notification.central_scene
+    property: scene
+    property_key: "001"
+    endpoint: 0
+    command_class: 91
+    subtype: Endpoint 0 Scene 001
+    value: 1
+
+action:
