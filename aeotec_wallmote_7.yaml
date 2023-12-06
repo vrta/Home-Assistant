@@ -315,7 +315,7 @@ action:
             id:
               - TopHeld
           - condition: template
-              value_template: "{{ dimmer_enabled == true}}"
+            value_template: "{{ dimmer_enabled == true}}"
         sequence:
           - repeat:
             sequence:
@@ -375,7 +375,7 @@ action:
             id:
               - BottomHeld
           - condition: template
-              value_template: "{{ dimmer_enabled == true}}"
+            value_template: "{{ dimmer_enabled == true}}"
         sequence:
           - repeat:
             sequence:
