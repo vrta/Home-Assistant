@@ -37,67 +37,66 @@ blueprint:
     top_2:
       name: Actions for Top Pressed 2x
       default: 
-        - stop: ""
       selector: 
         action:
     top_3:
       name: Actions for Top Pressed 3x
-      default: {}
+      default: 
       selector: 
         action:
 
     top_4:
       name: Actions for Top Pressed 4x
-      default: {}
+      default: 
       selector: 
         action:
 
     top_5:
       name: Actions for Top Pressed 5x
-      default: {}
+      default: 
       selector: 
         action:
 
     top_held:
       name: Actions for Top Held
       description: This wont apply if dimming is enabled
-      default: {}
+      default: 
       selector: 
         action:
 
     bottom_1:
       name: Actions for Bottom Pressed
-      default: {}
+      default: 
       selector:
         action:
     bottom_2:
       name: Actions for Bottom Pressed 2x
-      default: {}
+      default: 
       selector: 
         action:
 
     bottom_3:
       name: Actions for Bottom Pressed 3x
-      default: {}
+      default: 
       selector: 
         action:
 
     bottom_4:
       name: Actions for Bottom Pressed 4x
-      default: {}
+      default: 
       selector: 
         action:
 
     bottom_5:
       name: Actions for Bottom Pressed 5x
-      default: {}
+      default: 
       selector: 
         action:
 
     bottom_held:
       name: Actions for Bottom Held
       description: This wont apply if dimming is enabled
-      default: {}
+      default: 
       selector: 
         action:
 
