@@ -329,11 +329,11 @@ action:
                     hours: 0
                     minutes: 0
                     seconds: 0
-                    milliseconds: 5
+                    milliseconds: 50
               until:
                 - condition: numeric_state
                   entity_id: !input dimming_light
-                  above: 99
+                  above: 100
                   attribute: brightness
 
       # Bottom Button
@@ -390,9 +390,9 @@ action:
                     hours: 0
                     minutes: 0
                     seconds: 0
-                    milliseconds: 5
+                    milliseconds: 50
               until:
                 - condition: numeric_state
                   entity_id: !input dimming_light
-                  below: 1
+                  below: 0
                   attribute: brightness
