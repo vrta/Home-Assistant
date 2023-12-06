@@ -51,6 +51,32 @@ blueprint:
       selector: 
         action:
 
+    bottom_1:
+      name: Actions for Bottom Pressed
+      selector:
+        action:
+    bottom_2:
+      name: Actions for Bottom Pressed 2x
+      selector: 
+        action:
+    bottom_3:
+      name: Actions for Bottom Pressed 3x
+      selector: 
+        action:
+    bottom_4:
+      name: Actions for Bottom Pressed 4x
+      selector: 
+        action:
+    bottom_5:
+      name: Actions for Bottom Pressed 5x
+      selector: 
+        action:
+    bottom_held:
+      name: Actions for Bottom Held
+      description: This wont apply if dimming is enabled
+      selector: 
+        action:
+
 # If motion is detected within the delay,
 # we restart the script.
 mode: restart
@@ -216,3 +242,10 @@ trigger:
     value: 1
 
 action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - Top1
+        sequence:
+          !input top_1
