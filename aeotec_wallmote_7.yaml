@@ -17,11 +17,11 @@ blueprint:
       default: false
       selector:
         boolean:
-        
+
     dimming_light:
       name: Dimmer Light
       description: Light to dim when held down.
-      default: {}
+      default: 
       selector:
         target:
           entity:
@@ -30,13 +30,14 @@ blueprint:
     # Actions
     top_1:
       name: Actions for Top Pressed
-      default: {}
+      default: 
       selector:
         action:
 
     top_2:
       name: Actions for Top Pressed 2x
-      default: {}
+      default: 
+        - stop: ""
       selector: 
         action:
     top_3:
