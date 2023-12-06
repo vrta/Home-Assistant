@@ -24,7 +24,7 @@ blueprint:
       default:
       selector:
         entity:
-          multiple: true
+          multiple: false
           filter:
             domain:
               - light
