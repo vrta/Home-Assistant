@@ -24,9 +24,11 @@ blueprint:
       default: 
       selector:
         entity:
+          multiple: true
           filter:
-            - domain: light
-            -  supported_features: 
+            domain: 
+              - light
+            supported_features: 
               - light.LightEntityFeature.TRANSITION
 
     # Actions
@@ -335,7 +337,7 @@ action:
                   milliseconds: 1
             until:
               - condition: numeric_state
-                !input dimming_light
+                entity_id: !input dimming_light
                 above: 99
                 attribute: brightness
 
@@ -401,6 +403,6 @@ action:
                   milliseconds: 1
             until:
               - condition: numeric_state
-                !input dimming_light
+                entity_id: !input dimming_light
                 below: 1
                 attribute: brightness
