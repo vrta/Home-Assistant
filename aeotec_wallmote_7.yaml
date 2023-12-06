@@ -324,11 +324,12 @@ action:
                     entity_id: !input dimming_light
                   data:
                     brightness_step_pct: 10
+                    transition: 0
                 - delay:
                     hours: 0
                     minutes: 0
                     seconds: 0
-                    milliseconds: 1
+                    milliseconds: 5
               until:
                 - condition: numeric_state
                   entity_id: !input dimming_light
@@ -384,11 +385,12 @@ action:
                     entity_id: !input dimming_light
                   data:
                     brightness_step_pct: -10
+                    transition: 0
                 - delay:
                     hours: 0
                     minutes: 0
                     seconds: 0
-                    milliseconds: 1
+                    milliseconds: 5
               until:
                 - condition: numeric_state
                   entity_id: !input dimming_light
