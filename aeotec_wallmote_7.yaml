@@ -329,7 +329,7 @@ action:
                     hours: 0
                     minutes: 0
                     seconds: 0
-                    milliseconds: 50
+                    milliseconds: 500
               until:
                 - condition: numeric_state
                   entity_id: !input dimming_light
@@ -390,7 +390,7 @@ action:
                     hours: 0
                     minutes: 0
                     seconds: 0
-                    milliseconds: 50
+                    milliseconds: 500
               until:
                 - condition: numeric_state
                   entity_id: !input dimming_light
