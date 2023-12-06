@@ -19,6 +19,7 @@ blueprint:
     dimming_light:
       name: Dimmer Light
       description: Light to dim when held down.
+      default: {}
       selector:
         target:
           entity:
@@ -27,53 +28,65 @@ blueprint:
     # Actions
     top_1:
       name: Actions for Top Pressed
+      default: {}
       selector:
         action:
     top_2:
       name: Actions for Top Pressed 2x
+      default: {}
       selector: 
         action:
     top_3:
       name: Actions for Top Pressed 3x
+      default: {}
       selector: 
         action:
     top_4:
       name: Actions for Top Pressed 4x
+      default: {}
       selector: 
         action:
     top_5:
       name: Actions for Top Pressed 5x
+      default: {}
       selector: 
         action:
     top_held:
       name: Actions for Top Held
       description: This wont apply if dimming is enabled
+      default: {}
       selector: 
         action:
 
     bottom_1:
       name: Actions for Bottom Pressed
+      default: {}
       selector:
         action:
     bottom_2:
       name: Actions for Bottom Pressed 2x
+      default: {}
       selector: 
         action:
     bottom_3:
       name: Actions for Bottom Pressed 3x
+      default: {}
       selector: 
         action:
     bottom_4:
       name: Actions for Bottom Pressed 4x
+      default: {}
       selector: 
         action:
     bottom_5:
       name: Actions for Bottom Pressed 5x
+      default: {}
       selector: 
         action:
     bottom_held:
       name: Actions for Bottom Held
       description: This wont apply if dimming is enabled
+      default: {}
       selector: 
         action:
 
@@ -243,9 +256,9 @@ trigger:
 
 action:
   - choose:
-      - conditions:
-          - condition: trigger
-            id:
-              - Top1
-        sequence:
-          !input top_1
+    - conditions:
+      - condition: trigger
+        id:
+          - Top1
+      sequence:
+        !input top_1
