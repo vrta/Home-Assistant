@@ -183,7 +183,7 @@ trigger:
     property_key: "002"
     endpoint: 0
     command_class: 91
-    subtype: Endpoint 0 Scene 001
+    subtype: Endpoint 0 Scene 002
     value: 0
     id: Bottom1
   - platform: device
@@ -191,10 +191,10 @@ trigger:
     domain: zwave_js
     type: event.value_notification.central_scene
     property: scene
-    property_key: "001"
+    property_key: "002"
     endpoint: 0
     command_class: 91
-    subtype: Endpoint 0 Scene 001
+    subtype: Endpoint 0 Scene 002
     value: 3
     id: Bottom2
   - platform: device
@@ -205,7 +205,7 @@ trigger:
     property_key: "002"
     endpoint: 0
     command_class: 91
-    subtype: Endpoint 0 Scene 001
+    subtype: Endpoint 0 Scene 002
     value: 4
     id: Bottom3
   - platform: device
@@ -216,7 +216,7 @@ trigger:
     property_key: "002"
     endpoint: 0
     command_class: 91
-    subtype: Endpoint 0 Scene 001
+    subtype: Endpoint 0 Scene 002
     value: 5
     id: Bottom4
   - platform: device
@@ -227,7 +227,7 @@ trigger:
     property_key: "002"
     endpoint: 0
     command_class: 91
-    subtype: Endpoint 0 Scene 001
+    subtype: Endpoint 0 Scene 002
     value: 6
     id: Bottom5
   - platform: device
@@ -238,7 +238,7 @@ trigger:
     property_key: "002"
     endpoint: 0
     command_class: 91
-    subtype: Endpoint 0 Scene 001
+    subtype: Endpoint 0 Scene 002
     value: 2
     id: BottomHeld
 
@@ -253,6 +253,7 @@ trigger:
     command_class: 91
     subtype: Endpoint 0 Scene 002
     value: 1
+    id: Released
   - platform: device
     device_id: 1857a0a6e845e0539c062d2476aa2538
     domain: zwave_js
@@ -263,12 +264,139 @@ trigger:
     command_class: 91
     subtype: Endpoint 0 Scene 001
     value: 1
+    id: Released
+
+variables:
+  dimmer_enabled: !input dimming
 
 action:
   - choose:
+    # Top Button
     - conditions:
       - condition: trigger
         id:
           - Top1
       sequence:
         !input top_1
+    - conditions:
+      - condition: trigger
+        id:
+          - Top2
+      sequence:
+        !input top_2
+    - conditions:
+      - condition: trigger
+        id:
+          - Top3
+      sequence:
+        !input top_3
+    - conditions:
+      - condition: trigger
+        id:
+          - Top4
+      sequence:
+        !input top_4
+    - conditions:
+      - condition: trigger
+        id:
+          - Top5
+      sequence:
+        !input top_5
+    - conditions:
+      - condition: trigger
+        id:
+          - TopHeld
+      - condition: template
+        value_template: "{{ dimmer_enabled == false}}"
+      sequence:
+        !input top_held
+
+    # Top Dimmer
+    - conditions:
+      - condition: trigger
+        id:
+          - TopHeld
+      - condition: template
+        value_template: "{{ dimmer_enabled == true}}"
+        sequence:
+          - repeat:
+            sequence:
+              - service: light.turn_on
+                target: !input dimming_light
+                data:
+                  brightness_step_pct: 10
+              - delay:
+                  hours: 0
+                  minutes: 0
+                  seconds: 0
+                  milliseconds: 1
+            until:
+              - condition: numeric_state
+                !input dimming_light
+                above: 99
+                attribute: brightness
+
+    # Bottom Button
+    - conditions:
+      - condition: trigger
+        id:
+          - Bottom1
+      sequence:
+        !input bottom_1
+    - conditions:
+      - condition: trigger
+        id:
+          - Bottom2
+      sequence:
+        !input bottom_2
+    - conditions:
+      - condition: trigger
+        id:
+          - Bottom3
+      sequence:
+        !input bottom_3
+    - conditions:
+      - condition: trigger
+        id:
+          - Bottom4
+      sequence:
+        !input bottom_4
+    - conditions:
+      - condition: trigger
+        id:
+          - Bottom5
+      sequence:
+        !input bottom_5
+    - conditions:
+      - condition: trigger
+        id:
+          - BottomHeld
+      - condition: template
+        value_template: "{{ dimmer_enabled == false}}"
+      sequence:
+        !input top_held
+
+    # Bottom Dimmer
+    - conditions:
+      - condition: trigger
+        id:
+          - BottomHeld
+      - condition: template
+        value_template: "{{ dimmer_enabled == true}}"
+        sequence:
+          - repeat:
+            sequence:
+              - service: light.turn_on
+                target: !input dimming_light
+                data:
+                  brightness_step_pct: -10
+              - delay:
+                  hours: 0
+                  minutes: 0
+                  seconds: 0
+                  milliseconds: 1
+            until:
+              - condition: numeric_state
+                !input dimming_light
+                below: 1
+                attribute: brightness
