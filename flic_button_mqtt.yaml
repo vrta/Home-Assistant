@@ -1,0 +1,71 @@
+blueprint:
+  name: Flic Button MQTT Blueprint
+  description: Configure actions for flic button via MQTT
+  domain: automation
+  source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant-Blueprints/main/flic_button_mqtt.yaml
+  author: Zachary Priddy
+  input:
+    flic_id:
+      name: Flic Button MQTT Topic Prefix
+      description: Everything before the /action
+      selector:
+        text:
+
+    # Actions
+    click:
+      name: Actions for flic clicked
+      default:
+      selector:
+        action:
+
+    double_click:
+      name: Actions for flic double clicked
+      default:
+      selector:
+        action:
+
+    hold:
+      name: Actions for flic held
+      default:
+      selector:
+        action:
+
+    
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: parallel
+max: 3
+
+trigger:
+  - platform: mqtt
+    topic: "{{!input flic_id}}/action"
+    payload: click
+    id: click
+  - platform: mqtt
+    topic: "{{!input flic_id}}/action"
+    payload: double_click
+    id: double_click    
+  - platform: mqtt
+    topic: "{{!input flic_id}}/action"
+    payload: hold
+    id: hold    
+
+action:
+  - choose:
+      # Top Button
+      - conditions:
+          - condition: trigger
+            id:
+              - click
+        sequence: !input click
+      - conditions:
+          - condition: trigger
+            id:
+              - double_click
+        sequence: !input double_click
+      - conditions:
+          - condition: trigger
+            id:
+              - hold
+        sequence: !input hold
