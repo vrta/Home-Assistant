@@ -5,7 +5,7 @@ blueprint:
   source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant-Blueprints/main/flic_button_mqtt.yaml
   author: Zachary Priddy
   input:
-    flic_id:
+    mqtt_topic_prefix:
       name: Flic Button MQTT Topic Prefix
       description: Everything before the /action
       selector:
@@ -39,17 +39,20 @@ max: 3
 
 trigger:
   - platform: mqtt
-    topic: "{{!input flic_id}}/action"
+    topic: "{{mqtt_topic_prefix}}/action"
     payload: click
     id: click
   - platform: mqtt
-    topic: "{{!input flic_id}}/action"
+    topic: "{{mqtt_topic_prefix}}/action"
     payload: double_click
     id: double_click    
   - platform: mqtt
-    topic: "{{!input flic_id}}/action"
+    topic: "{{mqtt_topic_prefix}}/action"
     payload: hold
     id: hold    
+
+variables:
+  mqtt_topic_prefix: !input mqtt_topic_prefix
 
 action:
   - choose:
