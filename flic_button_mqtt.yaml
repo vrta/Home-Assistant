@@ -37,22 +37,22 @@ blueprint:
 mode: parallel
 max: 3
 
+variables:
+  mqtt_topic: "{{!input mqtt_topic_prefix}}/action"
+
 trigger:
   - platform: mqtt
-    topic: "{{mqtt_topic_prefix}}/action"
+    topic: "{{mqtt_topic}}"
     payload: click
     id: click
   - platform: mqtt
-    topic: "{{mqtt_topic_prefix}}/action"
+    topic: "{{mqtt_topic}}"
     payload: double_click
     id: double_click    
   - platform: mqtt
-    topic: "{{mqtt_topic_prefix}}/action"
+    topic: "{{mqtt_topic}}"
     payload: hold
     id: hold    
-
-variables:
-  mqtt_topic_prefix: !input mqtt_topic_prefix
 
 action:
   - choose:
