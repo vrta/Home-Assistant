@@ -1,6 +1,6 @@
 blueprint:
   name: Flic Button MQTT Blueprint
-  description: Configure actions for flic button via MQTT v2
+  description: Configure actions for flic button via MQTT
   domain: automation
   source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant-Blueprints/main/flic_button_mqtt.yaml
   author: Zachary Priddy
@@ -38,8 +38,8 @@ mode: parallel
 max: 3
 
 variables:
-  mqtt_topic_prefix: !input mqtt_topic_prefix
-  mqtt_topic: "{{mqtt_topic_prefix}}/action"
+  mqtt_topic_prefix_var: !input mqtt_topic_prefix
+  mqtt_topic: "{{mqtt_topic_prefix_var}}/action"
 
 trigger:
   - platform: mqtt
