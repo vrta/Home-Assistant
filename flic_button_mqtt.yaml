@@ -38,7 +38,8 @@ mode: parallel
 max: 3
 
 variables:
-  mqtt_topic: "{{!input mqtt_topic_prefix}}/action"
+  mqtt_topic_prefix: !input mqtt_topic_prefix
+  mqtt_topic: "{{mqtt_topic_prefix}}/action"
 
 trigger:
   - platform: mqtt
