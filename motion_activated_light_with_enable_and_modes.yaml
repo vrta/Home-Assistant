@@ -30,7 +30,7 @@ blueprint:
         condition:
     light_target:
       name: Lights
-      default: []
+      default: {}
       selector:
         target:
           entity:
@@ -38,7 +38,7 @@ blueprint:
               - light
     switch_target:
       name: Switches
-      default: []
+      default: {}
       selector:
         target:
           entity:
