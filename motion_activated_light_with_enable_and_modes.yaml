@@ -18,6 +18,11 @@ blueprint:
           options:
             ["Home", "Away", "Night", "Movie", "Arriving", "No Automation"]
           multiple: true
+    automation_enabled:
+      name: Automation Switch
+      selector:
+        entity:
+          domain: input_boolean
     custom_conditions:
       name: Custom run conditions
       default:
@@ -25,7 +30,7 @@ blueprint:
         condition:
     light_target:
       name: Lights
-      default:
+      default: []
       selector:
         target:
           entity:
@@ -33,17 +38,12 @@ blueprint:
               - light
     switch_target:
       name: Switches
-      default:
+      default: []
       selector:
         target:
           entity:
             domain:
               - switch
-    automation_enabled:
-      name: Automation Switch
-      selector:
-        entity:
-          domain: input_boolean
     no_motion_wait:
       name: Wait time
       description: Time to leave the light on after last motion is detected.
