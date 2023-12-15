@@ -2,7 +2,7 @@ blueprint:
   name: Motion-activated Light With Enable Switch and Modes
   description: Turn on a light when motion is detected and Automation is Enabled.
   domain: automation
-  source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant-Blueprints/main/motion_activated_light_with_enable_and_modes.yaml
+  source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant/main/blueprints/motion_activated_light_with_enable_and_modes.yaml
   author: Zachary Priddy
   input:
     motion_entity:
