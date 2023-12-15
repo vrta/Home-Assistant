@@ -1,0 +1,27 @@
+# This should be manually copied to a script
+
+alias: Power Cycle Switch
+sequence:
+  - service: switch.turn_off
+    target:
+      entity_id:  "{{target_device}}"
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: switch.turn_on
+    target:
+      entity_id: "{{target_device}}"
+    data: {}
+mode: single
+fields:
+  target_device:
+    selector:
+      entity:
+        filter:
+          - domain: switch
+    name: Target Device
+    description: Device to Power Cycle
+    required: true
