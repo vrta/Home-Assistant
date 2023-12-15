@@ -1,0 +1,57 @@
+# This should ne manually copied to a script
+# Replace adaptive_lighting_configs entries with the main 
+# adaptive lighting switch for each instance of adaptive lighting 
+# you have. 
+#
+# Below that you can set what you want all of the adaptive lighting
+# configs to be. 
+#
+# After this script is installed, make an automation that triggers 
+# from Home Assistant booting, delay 5 minutes, and run this script.
+# This will ensure all of your configs stay the same.
+#
+
+
+alias: Set Adaptive Lighting
+sequence:
+  - variables:
+      adaptive_lighting_configs:
+        - switch.adaptive_lighting_bathroom_adaptive_lighting
+        - switch.adaptive_lighting_kitchen_adaptive_lighting
+        - switch.adaptive_lighting_hallway_lighting
+        - switch.adaptive_lighting_studio_adaptive_lighting
+        - switch.adaptive_lighting_adaptive_lighting
+        - switch.adaptive_lighting_living_room
+        - switch.adaptive_lighting_bedroom
+        - switch.adaptive_lighting_den
+  - repeat:
+      for_each: "{{adaptive_lighting_configs}}"
+      sequence:
+        - service: adaptive_lighting.change_switch_settings
+          data:
+            use_defaults: current
+            include_config_in_attributes: true
+            initial_transition: 10
+            sleep_transition: "10"
+            max_brightness: "100"
+            min_brightness: "70"
+            max_color_temp: "6600"
+            min_color_temp: "2800"
+            multi_light_intercept: true
+            separate_turn_on_commands: true
+            send_split_delay: true
+            skip_redundant_commands: true
+            sleep_brightness: 20
+            sleep_rgb_or_color_temp: rgb_color
+            sleep_rgb_color:
+              - 255
+              - 38
+              - 0
+            sunset_offset: 6000
+            transition: "1.5"
+            take_over_control: false
+            adapt_delay: "1"
+            entity_id: "{{ repeat.item }}"
+          target:
+            entity_id: "{{ repeat.item }}"
+mode: restart
