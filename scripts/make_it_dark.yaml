@@ -9,7 +9,6 @@ blueprint:
     turn them off and turn on adaptive lighting sleep mode. For any other mode,
     this will just turn off the lights slowly.
   domain: script
-  author: Zachary Priddy
   input:
     adaptive_lighting_config:
       name: "Adaptive Lighting Config"

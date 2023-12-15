@@ -1,0 +1,42 @@
+blueprint:
+  name: Make It Dark
+  source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant/main/scripts/adaptive_lighting_no_automation.yaml
+  author: Zachary Priddy
+  domain: script
+  input:
+    adaptive_lighting_switch:
+      selector:
+        entity:
+          filter:
+            - integration: adaptive_lighting
+      name: Adaptive Lighting Switch
+      description: Switch to control adaptive lighting
+      required: true
+    automation_switch:
+      selector:
+        entity:
+          domain: input_boolean
+      name: Automation Switch
+      description: Switch controlling areas Automation
+      required: true
+
+sequence:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{is_state(automation_switch, 'on')}}"
+        sequence:
+          - service: switch.turn_on
+            data: {}
+            target:
+              entity_id: "{{ adaptive_lighting_switch }}"
+      - conditions:
+          - condition: template
+            value_template: "{{is_state(automation_switch, 'off')}}"
+        sequence:
+          - service: switch.turn_off
+            data: {}
+            target:
+              entity_id: "{{ adaptive_lighting_switch }}"
+mode: queued
+
