@@ -1,0 +1,34 @@
+# This will disable adaptive lighting controls for an area if the Automation Enable switch is turned off.
+#
+# This requires the script adaptive_lighting_no_automation.yaml in scripts
+#
+# Copy and update as needed
+
+alias: Automation Adaptive Lighting Control
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - input_boolean.automation_hallway_automation
+      - input_boolean.automation_den_automation
+      - input_boolean.automation_bedroom_automation
+      - input_boolean.automation_bathroom_automation
+      - input_boolean.automation_living_room
+      - input_boolean.automation_kitchen_automation
+      - input_boolean.automation_studio_automation
+condition: []
+action:
+  - variables:
+      switch_lookup:
+        input_boolean.automation_hallway_automation: switch.adaptive_lighting_hallway_lighting
+        input_boolean.automation_den_automation: switch.adaptive_lighting_den
+        input_boolean.automation_bedroom_automation: switch.adaptive_lighting_bedroom
+        input_boolean.automation_bathroom_automation: switch.adaptive_lighting_bathroom_adaptive_lighting
+        input_boolean.automation_living_room: switch.adaptive_lighting_living_room
+        input_boolean.automation_kitchen_automation: switch.adaptive_lighting_kitchen_adaptive_lighting
+        input_boolean.automation_studio_automation: switch.adaptive_lighting_studio_adaptive_lighting
+  - service: script.adaptive_lighting_no_automation
+    data:
+      adaptive_lighting_switch: "{{switch_lookup[trigger.entity_id]}}"
+      automation_switch: "{{trigger.entity_id}}"
+mode: single
