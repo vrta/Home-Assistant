@@ -32,10 +32,10 @@ blueprint:
         boolean:
     custom_conditions:
       name: Custom Run Conditions
-      default: {}
+      default: 
       description: Custom conditions to check before running automation
       selector:
-        condition:
+        condition:  {}
     motion_entity:
       name: Motion Sensor
       selector:
