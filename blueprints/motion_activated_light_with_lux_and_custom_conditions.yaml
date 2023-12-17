@@ -3,7 +3,7 @@ blueprint:
   name: Motion-activated Light Lux and Custom Conditions
   description: Turn on a light when motion is detected and Automation is Enabled. Also allows for run modes.
   domain: automation
-  source_url: source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant/main/blueprints/motion_activated_light_with_lux_and_custom_conditions.yaml
+  source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant/main/blueprints/motion_activated_light_with_lux_and_custom_conditions.yaml
   author: Zachary Priddy
   input:
     automation_enabled:
