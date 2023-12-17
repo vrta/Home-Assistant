@@ -1,25 +1,4 @@
-blueprint:
-  name: Adaptive Lighting No Automation
-  source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant/main/scripts/adaptive_lighting_no_automation.yaml
-  author: Zachary Priddy
-  domain: script
-  input:
-    adaptive_lighting_switch:
-      selector:
-        entity:
-          filter:
-            - integration: adaptive_lighting
-      name: Adaptive Lighting Switch
-      description: Switch to control adaptive lighting
-      required: true
-    automation_switch:
-      selector:
-        entity:
-          domain: input_boolean
-      name: Automation Switch
-      description: Switch controlling areas Automation
-      required: true
-
+alias: Adaptive Lighting No Automation
 sequence:
   - choose:
       - conditions:
@@ -39,4 +18,19 @@ sequence:
             target:
               entity_id: "{{ adaptive_lighting_switch }}"
 mode: queued
-
+fields:
+  adaptive_lighting_switch:
+    selector:
+      entity:
+        filter:
+          - integration: adaptive_lighting
+    name: Adaptive Lighting Switch
+    description: Switch to control adaptive lighting
+    required: true
+  automation_switch:
+    selector:
+      entity:
+        domain: input_boolean
+    name: Automation Switch
+    description: Switch controlling areas Automation
+    required: true
