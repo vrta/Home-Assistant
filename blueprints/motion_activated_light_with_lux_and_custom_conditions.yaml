@@ -1,4 +1,4 @@
-motion_activated_light_with_lux_and_custom_conditions.yaml
+
 blueprint:
   name: Motion-activated Light Lux and Custom Conditions
   description: Turn on a light when motion is detected and Automation is Enabled. Also allows for run modes.
