@@ -32,7 +32,7 @@ blueprint:
         boolean:
     custom_conditions:
       name: Custom Run Conditions
-      default:
+      default: {}
       description: Custom conditions to check before running automation
       selector:
         condition:
@@ -50,7 +50,7 @@ blueprint:
           device_class: illuminance
           multiple: false
     illuminance_threshold_min:
-      name: Illuminance dark threshold
+      name: Illuminance Min Threshold
       description: The illuminance below which, the lights will turn on.
       default: 50
       selector:
@@ -61,7 +61,7 @@ blueprint:
           step: 5
           mode: slider
     illuminance_threshold_max:
-      name: Illuminance dark threshold
+      name: Illuminance Max Threshold
       description: The illuminance above which, the lights will turn off.
       default: 50
       selector:
