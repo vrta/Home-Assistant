@@ -30,9 +30,9 @@ blueprint:
 
     custom_conditions:
       name: Custom run conditions
-      default:
+      default: 
       selector:
-        condition:
+        condition: {}
 
 
 mode: queued
