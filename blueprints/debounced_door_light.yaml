@@ -1,0 +1,94 @@
+blueprint:
+  name: Debounced Door Light
+  description: Turn on a light when a door opens and turn it off after it closes. There is a 1 second debounce to address issues where door sensors may flipflop.
+  domain: automation
+  source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant/main/blueprints/debounced_door_light.yaml
+  author: Zachary Priddy
+  input:
+    door_sensor:
+      name: Door Sensor
+      selector:
+        entity:
+          filter:
+            device_class: door
+
+    light:
+      name: Light
+      default: []
+      selector:
+        entity:
+          filter:
+             domain: light
+
+    switch:
+      name: Switch
+      default: []
+      selector:
+        entity:
+          filter:
+             domain: switch  
+
+    custom_conditions:
+      name: Custom run conditions
+      default:
+      selector:
+        condition:
+
+
+mode: queued
+max: 3
+
+trigger:
+
+  - platform: state
+    id: opened
+    entity_id: !input door_sensor
+    to: "on"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+
+  - platform: state
+    id: closed
+    entity_id: !input door_sensor
+    to: "off"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+
+condition:
+  - condition: !input custom_conditions
+
+action:
+  - choose:
+      - conditions:
+        - condition: trigger
+          id:
+            - opened
+        sequence:
+          - parallel:
+              - service: switch.turn_on
+                data: {}
+                target:
+                  entity_id: !input switch
+              - service: light.turn_on
+                target:
+                  entity_id: !input light
+                data: {}
+
+      - conditions:
+        - condition: trigger
+          id:
+            - opened
+        sequence:
+          - parallel:
+              - service: switch.turn_off
+                data: {}
+                target:
+                  entity_id: !input switch
+              - service: light.turn_off
+                target:
+                  entity_id: !input light
+                data: {}
