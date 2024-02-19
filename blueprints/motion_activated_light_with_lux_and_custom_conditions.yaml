@@ -16,6 +16,7 @@ blueprint:
           multiple: false
     run_modes:
       name: Automation Run Modes
+      default: []
       selector:
         select:
           options:
@@ -32,6 +33,7 @@ blueprint:
           custom_value: true
     no_run_modes:
       name: Automation No Run Modes
+      default: []
       selector:
         select:
           options:
