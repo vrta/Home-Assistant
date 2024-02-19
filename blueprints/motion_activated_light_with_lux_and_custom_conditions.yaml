@@ -1,7 +1,7 @@
-
 blueprint:
   name: Motion-activated Light Lux and Custom Conditions
-  description: Turn on a light when motion is detected and Automation is Enabled. Also allows for run modes.
+  description: Turn on a light when motion is detected and Automation is Enabled.
+    Also allows for run modes.
   domain: automation
   source_url: https://raw.githubusercontent.com/zpriddy/Home-Assistant/main/blueprints/motion_activated_light_with_lux_and_custom_conditions.yaml
   author: Zachary Priddy
@@ -10,44 +10,69 @@ blueprint:
       name: Automation Switch
       selector:
         entity:
-          domain: input_boolean
+          domain:
+          - input_boolean
+          multiple: false
     run_modes:
       name: Automation Run Modes
       selector:
         select:
           options:
-            ["Home", "Away", "Night", "Movie", "Arriving", "No Automation"]
+          - Home
+          - Away
+          - Night
+          - Movie
+          - Arriving
+          - Chill
+          - Wake Up
+          - No Automation
           multiple: true
+          sort: false
+          custom_value: true
     no_run_modes:
       name: Automation No Run Modes
       selector:
         select:
           options:
-            ["Home", "Away", "Night", "Movie", "Arriving", "No Automation"]
+          - Home
+          - Away
+          - Night
+          - Movie
+          - Arriving
+          - Chill
+          - Wake Up
+          - No Automation
           multiple: true
+          sort: false
+          custom_value: true
     turn_off_on_mode_change:
       name: Turn off lights when no-run mode is activated
       default: true
       selector:
-        boolean:
+        boolean: {}
     custom_conditions:
       name: Custom Run Conditions
-      default: 
+      default:
       description: Custom conditions to check before running automation
       selector:
-        condition:  {}
+        condition: {}
     motion_entity:
       name: Motion Sensor
       selector:
         entity:
-          domain: binary_sensor
-          device_class: motion
+          domain:
+          - binary_sensor
+          device_class:
+          - motion
+          multiple: false
     illuminance_entity:
       name: Illuminance Sensor
       selector:
         entity:
-          domain: sensor
-          device_class: illuminance
+          domain:
+          - sensor
+          device_class:
+          - illuminance
           multiple: false
     illuminance_threshold_min:
       name: Illuminance Min Threshold
@@ -56,9 +81,9 @@ blueprint:
       selector:
         number:
           min: 0.0
-          max: 700
+          max: 700.0
           unit_of_measurement: lux
-          step: 5
+          step: 5.0
           mode: slider
     illuminance_threshold_max:
       name: Illuminance Max Threshold
@@ -67,171 +92,168 @@ blueprint:
       selector:
         number:
           min: 0.0
-          max: 700
+          max: 700.0
           unit_of_measurement: lux
-          step: 5
+          step: 5.0
           mode: slider
     light_target:
       name: Light
-      default: { "entity_id": [] }
+      default:
+        entity_id: []
       selector:
         target:
           entity:
-            domain:
-              - light
+          - domain:
+            - light
     switch_target:
       name: Switches
-      default: { "entity_id": [] }
+      default:
+        entity_id: []
       selector:
         target:
           entity:
-            domain:
-              - switch
+          - domain:
+            - switch
     no_motion_wait:
       name: Wait time
       description: Time to leave the light on after last motion is detected.
       default: 60
       selector:
         number:
-          min: 0
-          max: 3600
+          min: 0.0
+          max: 3600.0
           unit_of_measurement: seconds
-
-# If motion is detected within the delay,
-# we restart the script.
+          mode: slider
+          step: 1.0
 mode: restart
 max_exceeded: silent
-
 trigger:
-  - platform: state
-    entity_id:
-      - !input illuminance_entity
-    to: null
-    id: lux_trigger
-  - platform: state
-    entity_id:
-      - !input motion_entity
-    to: "on"
-    id: motion_started
-  - platform: state
-    entity_id:
-      - !input motion_entity
-    to: "off"
-    id: motion_stop
-    for:
-      hours: 0
-      minutes: 0
-      seconds: !input no_motion_wait
-  - platform: state
-    entity_id:
-      - input_select.mode
-    id: mode_trigger
-    to: null
-
+- platform: state
+  entity_id:
+  - !input illuminance_entity
+  to:
+  id: lux_trigger
+- platform: state
+  entity_id:
+  - !input motion_entity
+  to: 'on'
+  id: motion_started
+- platform: state
+  entity_id:
+  - !input motion_entity
+  to: 'off'
+  id: motion_stop
+  for:
+    hours: 0
+    minutes: 0
+    seconds: !input no_motion_wait
+- platform: state
+  entity_id:
+  - input_select.mode
+  id: mode_trigger
+  to:
 variables:
   run_modes: !input run_modes
   no_run_modes: !input no_run_modes
-  in_run_mode: >
-    {{ states('input_select.mode') in run_modes }}
-  in_no_run_mode: >
-    {{states('input_select.mode') in no_run_modes }}"
-  # custom_conditions: !input custom_conditions
+  in_run_mode: '{{ states(''input_select.mode'') in run_modes }}
 
+    '
+  in_no_run_mode: '{{states(''input_select.mode'') in no_run_modes }}"
+
+    '
 condition:
-  # - "{{custom_conditions}}"
-  - condition: or
+- condition: or
+  conditions:
+  - condition: and
     conditions:
+    - condition: trigger
+      id:
+      - mode_trigger
+    - alias: Turn off lights on no run mode change
+      condition: template
+      value_template: '{{in_no_run_mode == true}}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id:
+      - lux_trigger
+    - condition: or
+      conditions:
+      - condition: numeric_state
+        entity_id: !input illuminance_entity
+        above: !input illuminance_threshold_max
+      - condition: numeric_state
+        entity_id: !input illuminance_entity
+        below: !input illuminance_threshold_min
+    - condition: template
+      value_template: '{{in_run_mode == true}}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id:
+      - motion_started
+    - condition: template
+      value_template: '{{in_run_mode == true}}'
+  - condition: trigger
+    id:
+    - motion_stop
+  enabled: true
+- condition: state
+  entity_id: !input automation_enabled
+  state: 'on'
+- condition: !input custom_conditions
+action:
+- choose:
+  - alias: Mode Change
+    conditions:
+    - condition: template
+      value_template: '{{in_no_run_mode == true}}'
+    - condition: trigger
+      id:
+      - mode_trigger
+    sequence:
+    - service: light.turn_off
+      data: {}
+      target: !input light_target
+  - conditions:
+    - condition: template
+      value_template: '{{in_run_mode == true}}'
+      enabled: true
+      alias: Check Mode
+    - condition: trigger
+      id:
+      - lux_trigger
+      - motion_started
+      alias: Motion or Dark
+    - condition: numeric_state
+      entity_id: !input illuminance_entity
+      below: !input illuminance_threshold_min
+    - condition: state
+      entity_id: !input motion_entity
+      state: 'on'
+    sequence:
+    - service: light.turn_on
+      data: {}
+      target: !input light_target
+  - conditions:
+    - condition: template
+      value_template: '{{in_run_mode == true}}'
+    - condition: or
+      conditions:
       - condition: and
         conditions:
-          - condition: trigger
-            id:
-              - mode_trigger
-          - alias: Turn off lights on no run mode change
-            condition: template
-            value_template: "{{in_no_run_mode == true}}"
-      - condition: and
-        conditions:
-          - condition: trigger
-            id:
-              - lux_trigger
-          - condition: or
-            conditions:
-              - condition: numeric_state
-                entity_id: !input illuminance_entity
-                above: !input illuminance_threshold_max
-              - condition: numeric_state
-                entity_id: !input illuminance_entity
-                below: !input illuminance_threshold_min
-          - condition: template
-            value_template: "{{in_run_mode == true}}"
-      - condition: and
-        conditions:
-          - condition: trigger
-            id:
-              - motion_started
-          - condition: template
-            value_template: "{{in_run_mode == true}}"
+        - condition: trigger
+          id:
+          - lux_trigger
+        - condition: numeric_state
+          entity_id: !input illuminance_entity
+          above: !input illuminance_threshold_max
       - condition: trigger
         id:
-          - motion_stop
-    enabled: true
-  - condition: state
-    entity_id: !input automation_enabled
-    state: "on"
-  - condition: !input custom_conditions
-
-action:
-  - choose:
-      - alias: Mode Change
-        conditions:
-          - condition: template
-            value_template: "{{in_no_run_mode == true}}"
-          - condition: trigger
-            id:
-              - mode_trigger
-        sequence:
-          - service: light.turn_off
-            data: {}
-            target: !input light_target
-      - conditions:
-          - condition: template
-            value_template: "{{in_run_mode == true}}"
-            enabled: true
-            alias: Check Mode
-          - condition: trigger
-            id:
-              - lux_trigger
-              - motion_started
-            alias: Motion or Dark
-          - condition: numeric_state
-            entity_id: !input illuminance_entity
-            below: !input illuminance_threshold_min
-          - condition: state
-            entity_id: !input motion_entity
-            state: "on"
-        sequence:
-          - service: light.turn_on
-            data: {}
-            target: !input light_target
-      - conditions:
-          - condition: template
-            value_template: "{{in_run_mode == true}}"
-          - condition: or
-            conditions:
-              - condition: and
-                conditions:
-                  - condition: trigger
-                    id:
-                      - lux_trigger
-                  - condition: numeric_state
-                    entity_id: !input illuminance_entity
-                    above: !input illuminance_threshold_max
-              - condition: trigger
-                id:
-                  - motion_stop
-            alias: Bright or No Motion
-        sequence:
-          - service: light.turn_off
-            data: {}
-            target: !input light_target
-    default: []
+        - motion_stop
+      alias: Bright or No Motion
+    sequence:
+    - service: light.turn_off
+      data: {}
+      target: !input light_target
+  default: []
